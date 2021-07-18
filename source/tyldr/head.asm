@@ -64,3 +64,4 @@ GDT_end:
 GDT_PTR:
     dw GDT_end - GDT_start - 1
     dd 0x5000
+
