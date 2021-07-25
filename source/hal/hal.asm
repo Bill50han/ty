@@ -27,7 +27,7 @@ HalFrom32ReturnTo16:
 	sti
 	jmp bp:dx
 
-
+[BITS 16]
 HalFrom16ReturnTo32:
 	cli
 	mov eax, cr0
@@ -45,3 +45,79 @@ HalFrom16ReturnTo32:
 	pop edx
 	sti
 	jmp edx
+
+[BITS 16]
+HalReadDiskSectorsWith13h:;byte driveNum,word num,dword buffer,qword startLBA
+	mov ax, 0
+	mov ds, ax
+	mov di, sp
+	sub sp, 10h
+
+	mov byte [di - 1], 10h
+	
+	mov byte [di - 2], 0
+	
+	mov word ax, [di + 12]
+	mov word [di - 4], ax
+	
+	mov word ax, [di + 8]
+	mov word [di - 8], ax
+	mov word ax, [di + 10]
+	mov word [di - 6], ax
+
+	mov word ax, [di]
+	mov word [di - 16], ax
+	mov word ax, [di + 2]
+	mov word [di - 14], ax
+	mov word ax, [di + 4]
+	mov word [di - 12], ax
+	mov word ax, [di + 6]
+	mov word [di - 10], ax
+
+	mov dl, [di + 14]
+
+	dec di
+	mov si, di
+
+	mov ah, 42h
+	int 13h
+	ret 10h
+
+[BITS 16]
+HalWriteDiskSectorsWith13h:;byte driveNum,word num,dword buffer,qword startLBA
+	mov ax, 0
+	mov ds, ax
+	mov di, sp
+	sub sp, 10h
+
+	mov byte [di - 1], 10h
+	
+	mov byte [di - 2], 0
+	
+	mov word ax, [di + 12]
+	mov word [di - 4], ax
+	
+	mov word ax, [di + 8]
+	mov word [di - 8], ax
+	mov word ax, [di + 10]
+	mov word [di - 6], ax
+
+	mov word ax, [di]
+	mov word [di - 16], ax
+	mov word ax, [di + 2]
+	mov word [di - 14], ax
+	mov word ax, [di + 4]
+	mov word [di - 12], ax
+	mov word ax, [di + 6]
+	mov word [di - 10], ax
+
+	mov dl, [di + 14]
+
+	dec di
+	mov si, di
+
+	mov ah, 43h
+	mov al, 0
+	int 13h
+	ret 10h
+
