@@ -1,15 +1,13 @@
-%macro newGDT_DATAorCODE 15
+%macro newGDT_DATAorCODE 13
 %if %1 == 0
 dq 0
 %else
-GDT_%2_start:
-dw %3
-dw %4
-db %5
-db ( %9 << 7 ) + ( %8 << 6 ) + ( %7 << 4 ) + %6
-db ( %14 << 7 ) + ( %13 << 6 ) + ( %12 << 5 ) + ( %11 << 4 ) + %10
-db %15
-%2 equ ( ( GDT_%2_start - %1 ) / 8 ) << 3 + ( 0 << 2 ) + 00b
+dw %1
+dw %2
+db %3
+db ( %7 << 7 ) + ( %6 << 6 ) + ( %5 << 4 ) + %4
+db ( %12 << 7 ) + ( %11 << 6 ) + ( %10 << 5 ) + ( %9 << 4 ) + %8
+db %13
 %endif
 %endmacro
 
@@ -38,7 +36,7 @@ dd 0
 
 %endmacro
 
-%define GDT_NULL 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+%define GDT_NULL 0,0,0,0,0,0,0,0,0,0,0,0,0
 
 %define GDT_TYPE_DATAorCODE(X, CE, RW, A) X %+ CE %+ RW %+ A %+ b
 

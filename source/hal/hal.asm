@@ -3,11 +3,11 @@ org 0x7000
 [BITS 32]
 HalFrom32ReturnTo16:
 	cli
-    jmp SelectorCode16:HalFrom32ReturnTo16_32
-    HalFrom32ReturnTo16_32:
-    mov eax, SelectorData16
-    mov ds, eax
-    mov es, eax
+	jmp 24:HalFrom32ReturnTo16_32
+	HalFrom32ReturnTo16_32:
+	mov eax, 32
+	mov ds, eax
+	mov es, eax
 
 	mov eax, cr0
 	and al, 1111_1110b
@@ -21,11 +21,10 @@ HalFrom32ReturnTo16:
 	mov es, ax
 	mov ss, ax
 
-	pop dx
-	pop bp
+	mov bx, sp
 	add sp, 4
 	sti
-	jmp bp:dx
+	jmp dword [bx]
 
 [BITS 16]
 HalFrom16ReturnTo32:
@@ -34,10 +33,10 @@ HalFrom16ReturnTo32:
 	or eax, 1
 	mov cr0, eax
 
-	jmp SelectorCode32:HalFrom16ReturnTo32_32
+	jmp 8:HalFrom16ReturnTo32_32
 	[BITS 32]
 	HalFrom16ReturnTo32_32:
-	mov eax, SelectorData32
+	mov eax, 16
 	mov ds, eax
 	mov es, eax
 	mov ss, eax

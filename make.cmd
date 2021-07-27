@@ -6,6 +6,9 @@ echo on
 
 ::编译
 
+::hal
+nasm -i.\source\include\ -fbin .\source\hal\hal.asm -o .\tmp\hal
+
 ::tyldr
 nasm -i.\source\include\ -fbin .\source\tyldr\head.asm -o .\tmp\head
 
@@ -18,6 +21,8 @@ gcc -mcmodel=large  -fno-builtin  -nostdlib -m64 -c .\source\kernel\tyosbase.c -
 ::"链接"
 cd .\tmp\
 
+::hal
+
 ::tyldr
 ren .\head tyldr
 
@@ -28,8 +33,10 @@ objcopy -R .comment -R .note -S -O binary tyosmain.o tyoskrnl
 ::生成
 cd ..
 copy .\tmp\tyldr .\release\
+copy .\tmp\hal .\release\
 copy .\tmp\tyoskrnl .\release\
 del .\tmp\tyoskrnl
 del .\tmp\tyldr
+del .\tmp\hal
 
 pause
