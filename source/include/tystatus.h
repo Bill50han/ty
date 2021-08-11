@@ -3,4 +3,6 @@
 
 typedef long TYSTATUS;
 
+#define STATUS_SUCCESS 0
+
 #endif // !tystatus_h
